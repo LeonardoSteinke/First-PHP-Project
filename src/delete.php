@@ -1,10 +1,15 @@
 <?php
 include 'connect.php';
+include 'TableGateways/UserGateway.php';
+
+use Src\TableGateways\UserGateway;
+
+$UserGateway = new UserGateway($con);
+
 if (isset($_GET['deleteid'])) {
     $id = $_GET['deleteid'];
 
-    $sql = "delete from `user` where id =$id";
-    $result = mysqli_query($con, $sql);
+    $result = $UserGateway->delete($id);
     if ($result) {
         // echo "Excluido com sucesso";
         header('location:index.php');

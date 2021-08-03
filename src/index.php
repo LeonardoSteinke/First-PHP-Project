@@ -1,5 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
+<?php
+include 'connect.php';
+include 'TableGateways/UserGateway.php';
+
+use Src\TableGateways\UserGateway;
+
+$UserGateway = new UserGateway($con);
+
+$result = $UserGateway->findAll();
+?>
 
 <head>
     <meta charset="UTF-8">
@@ -24,6 +34,7 @@
                 <tr>
                     <th scope="col">id</th>
                     <th scope="col">Nome</th>
+                    <th scope="col">Sobrenome</th>
                     <th scope="col">E-mail</th>
                     <th scope="col">Telefone</th>
                     <th scope="col">Actions</th>
@@ -31,21 +42,18 @@
             </thead>
             <tbody>
                 <?php
-                include 'connect.php';
-                $sql = "Select * from `user`";
-
-                $result = mysqli_query($con, $sql);
-
                 if ($result) {
 
                     while ($row = mysqli_fetch_assoc($result)) {
                         $id = $row['id'];
                         $name = $row['name'];
+                        $lastname = $row['lastname'];
                         $email = $row['email'];
                         $phone = $row['phone'];
                         echo '<tr>
                         <th scope="row">' . $id . '</th>
                         <th >' . $name . '</th>
+                        <th >' . $lastname . '</th>
                         <th >' . $email . '</th>
                         <th >' . $phone . '</th>
                         <th >

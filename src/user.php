@@ -1,14 +1,20 @@
 <?php
 include 'connect.php';
+include 'TableGateways/UserGateway.php';
+
+use Src\TableGateways\UserGateway;
+
+$UserGateway = new UserGateway($con);
 
 if (isset($_POST['submit'])) {
   $name = $_POST['name'];
+  $lastname = $_POST['lastname'];
   $email = $_POST['email'];
   $phone = $_POST['phone'];
   $password = $_POST['password'];
 
-  $sql = "insert into `user` (name, email, phone, password) values ('$name', '$email', '$phone', '$password')";
-  $result = mysqli_query($con, $sql);
+  $inputs = array("name" => $name, "lastname" => $lastname, "email" => $email, "phone" => $phone, "password" => $password);
+  $result = $UserGateway->insert($inputs);
 
   if ($result) {
     echo 'deu boa';
@@ -39,6 +45,10 @@ if (isset($_POST['submit'])) {
       <div class="mb-3">
         <label for="name" class="form-label">Nome</label>
         <input type="text" class="form-control" name="name" id="name" autocomplete="off" />
+      </div>
+      <div class="mb-3">
+        <label for="lastname" class="form-label">Sobrenome</label>
+        <input type="text" class="form-control" name="lastname" id="lastname" autocomplete="off" />
       </div>
       <div class="mb-3">
         <label for="email" class="form-label">E-mail</label>

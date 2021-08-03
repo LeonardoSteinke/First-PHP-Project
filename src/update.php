@@ -1,12 +1,18 @@
 <?php
 include 'connect.php';
+include 'TableGateways/UserGateway.php';
+
+use Src\TableGateways\UserGateway;
+
+$UserGateway = new UserGateway($con);
+
 $id = $_GET['updateid'];
 
-$sql = "select * from `user` where id = $id";
-
-$result = mysqli_query($con, $sql);
+$result = $UserGateway->find($id);
 $row = mysqli_fetch_assoc($result);
+
 $name = $row['name'];
+$lastname = $row['lastname'];
 $email = $row['email'];
 $phone = $row['phone'];
 $password = $row['password'];
@@ -14,12 +20,14 @@ $password = $row['password'];
 
 if (isset($_POST['submit'])) {
     $name = $_POST['name'];
+    $lastname = $_POST['lastname'];
     $email = $_POST['email'];
     $phone = $_POST['phone'];
     $password = $_POST['password'];
 
-    $sql = "update `user` set name='$name', email='$email', phone='$phone', password='$password' where id=$id";
-    $result = mysqli_query($con, $sql);
+    $inputs = array("name" => $name, "lastname" => $lastname, "email" => $email, "phone" => $phone, "password" => $password);
+
+    $result = $UserGateway->update($id, $inputs);
 
     if ($result) {
         header('location:index.php');
@@ -50,6 +58,10 @@ if (isset($_POST['submit'])) {
             <div class="mb-3">
                 <label for="name" class="form-label">Nome</label>
                 <input type="text" class="form-control" name="name" id="name" autocomplete="off" value="<?php echo $name ?>" />
+            </div>
+            <div class="mb-3">
+                <label for="lastname" class="form-label">Sobrenome</label>
+                <input type="text" class="form-control" name="lastname" id="lastname" autocomplete="off" value="<?php echo $lastname ?>" />
             </div>
             <div class="mb-3">
                 <label for="email" class="form-label">E-mail</label>
